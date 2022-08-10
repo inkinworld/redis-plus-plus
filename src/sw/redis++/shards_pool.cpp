@@ -245,13 +245,11 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
         return std::make_pair(slot_range, _parse_node(reply.element[2]));
 
     case Role::SLAVE: {
+        // Randomly pick a node from both master and slave
         auto size = reply.elements;
-        if (size <= 3) {
-            throw Error("no slave node available");
-        }
+        auto *slave_node_reply = reply.element[_random(2, size - 1)];
 
-        // Randomly pick a slave node.
-        auto *slave_node_reply = reply.element[_random(3, size - 1)];
+        return std::make_pair(slot_range, _parse_node(slave_node_reply));
 
         return std::make_pair(slot_range, _parse_node(slave_node_reply));
     }
