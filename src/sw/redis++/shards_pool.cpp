@@ -240,14 +240,14 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
 
     auto slot_range = SlotRange{min_slot, max_slot};
 
-    std::cout << "role: " << _role  << std::endl;
-    
     switch (_role) {
     case Role::MASTER:
+        std::cout << "role: master" << std::endl;
         // Return master node, i.e. `reply.element[2]`.
         return std::make_pair(slot_range, _parse_node(reply.element[2]));
 
     case Role::SLAVE: {
+        std::cout << "role: slave" << std::endl;
         // Randomly pick a node from both master and slave
         auto size = reply.elements;
         auto *slave_node_reply = reply.element[_random(2, size - 1)];
