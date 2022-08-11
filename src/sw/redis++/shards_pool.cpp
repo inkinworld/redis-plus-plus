@@ -16,6 +16,7 @@
 
 #include "shards_pool.h"
 #include <unordered_set>
+#include <iostream>
 #include "errors.h"
 
 namespace sw {
@@ -239,6 +240,8 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
 
     auto slot_range = SlotRange{min_slot, max_slot};
 
+    std::cout << "role: " << _role  << std::endl;
+    
     switch (_role) {
     case Role::MASTER:
         // Return master node, i.e. `reply.element[2]`.
