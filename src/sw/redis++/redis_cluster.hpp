@@ -17,6 +17,7 @@
 #ifndef SEWENEW_REDISPLUSPLUS_REDIS_CLUSTER_HPP
 #define SEWENEW_REDISPLUSPLUS_REDIS_CLUSTER_HPP
 
+#include <iostream>
 #include <utility>
 #include "command.h"
 #include "reply.h"
