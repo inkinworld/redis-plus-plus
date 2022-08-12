@@ -36,7 +36,11 @@ ShardsPool::ShardsPool(const ConnectionPoolOptions &pool_opts,
         throw Error("Only support TCP connection for Redis Cluster");
     }
 
-    std::cout << this << "ShardsPool constructor" << std::endl;
+    if (_role == Role::MASTER) {
+        std::cout << this << " ShardsPool constructor role: master" << std::endl;
+    } else { 
+        std::cout << this << " ShardsPool constructor role: slave" << std::endl;
+    }
 
     Connection connection(_connection_opts);
 
@@ -91,7 +95,12 @@ ConnectionPoolSPtr ShardsPool::fetch(const Node &node) {
 }
 
 void ShardsPool::update() {
-    std::cout << this << " ShardsPool::update" << std::endl;
+    if (_role == Role::MASTER) {
+        std::cout << this << " ShardsPool::update role: master" << std::endl;
+    } else { 
+        std::cout << this << " ShardsPool::update role: slave" << std::endl;
+    }
+
     // My might send command to a removed node.
     // Try at most 3 times.
     for (auto idx = 0; idx < 3; ++idx) {

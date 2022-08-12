@@ -48,7 +48,11 @@ public:
     RedisCluster(const ConnectionOptions &connection_opts,
                     const ConnectionPoolOptions &pool_opts = {},
                     Role role = Role::MASTER) : _pool(pool_opts, connection_opts, role) {
-                        std::cout << this << "RedisCluster construcntor" << std::endl;
+                        if (role == Role::MASTER) {
+                            std::cout << this << " RedisCluster constructor role: master" << std::endl;
+                        } else { 
+                            std::cout << this << " RedisCluster constructor role: slave" << std::endl;
+                        }
                     }
 
     // Construct RedisCluster with URI:
