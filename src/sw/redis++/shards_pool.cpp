@@ -89,7 +89,7 @@ ConnectionPoolSPtr ShardsPool::fetch(const Node &node) {
 }
 
 void ShardsPool::update() {
-    std::cout << "ShardsPool::update" << std::endl;
+    std::cout << this << "ShardsPool::update" << std::endl;
     // My might send command to a removed node.
     // Try at most 3 times.
     for (auto idx = 0; idx < 3; ++idx) {
@@ -244,7 +244,7 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
 
     switch (_role) {
     case Role::MASTER:
-        std::cout << "role: master" << std::endl;
+        std::cout << this << " ShardsPool::_parse_slot_info role: master" << std::endl;
         // Return master node, i.e. `reply.element[2]`.
         return std::make_pair(slot_range, _parse_node(reply.element[2]));
 
@@ -252,7 +252,7 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
         // Randomly pick a node from both master and slave
         auto size = reply.elements;
         auto r = _random(2, size - 1);
-        std::cout << "role: slave" << " randome: " << r << std::endl;
+        std::cout << this << " ShardsPool::_parse_slot_info role: slave" << " rand: " << r << std::endl;
         auto *slave_node_reply = reply.element[r];
         return std::make_pair(slot_range, _parse_node(slave_node_reply));
     }
@@ -345,9 +345,9 @@ auto ShardsPool::_add_node(const Node &node) -> NodeMap::iterator {
     // TODO: Better set readonly an attribute of `Node`.
     if (_role == Role::SLAVE) {
         opts.readonly = true;
-        std::cout << "_add_node role: slave" << std::endl;
+        std::cout << this << " _add_node role: slave" << std::endl;
     } else {
-        std::cout << "_add_node role: master" << std::endl;
+        std::cout << this << " _add_node role: master" << std::endl;
     }
 
     return _pools.emplace(node, std::make_shared<ConnectionPool>(_pool_opts, opts)).first;
