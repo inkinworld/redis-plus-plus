@@ -17,6 +17,7 @@
 #ifndef SEWENEW_REDISPLUSPLUS_REDIS_CLUSTER_H
 #define SEWENEW_REDISPLUSPLUS_REDIS_CLUSTER_H
 
+#include <iostream>
 #include <string>
 #include <chrono>
 #include <initializer_list>
