@@ -36,6 +36,8 @@ ShardsPool::ShardsPool(const ConnectionPoolOptions &pool_opts,
         throw Error("Only support TCP connection for Redis Cluster");
     }
 
+    std::cout << this << "ShardsPool constructor" << std::endl;
+
     Connection connection(_connection_opts);
 
     _shards = _cluster_slots(connection);
