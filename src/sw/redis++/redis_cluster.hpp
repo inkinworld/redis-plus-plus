@@ -1339,13 +1339,13 @@ ReplyUPtr RedisCluster::_command(Cmd cmd, const StringView &key, Args &&...args)
 
             return _command(cmd, safe_connection.connection(), std::forward<Args>(args)...);
         } catch (const IoError &err) {
-            std::cout << this << " _command IoError key: " << key << std::endl;
+            std::cout << this << " _command IoError" << std::endl;
             // When master is down, one of its replicas will be promoted to be the new master.
             // If we try to send command to the old master, we'll get an *IoError*.
             // In this case, we need to update the slots mapping.
             _pool.update();
         } catch (const ClosedError &err) {
-            std::cout << this << " _command ClosedError key: " << key << std::endl;
+            std::cout << this << " _command ClosedError" << std::endl;
             // Node might be removed.
             // 1. Get up-to-date slot mapping to check if the node still exists.
             _pool.update();
@@ -1354,11 +1354,11 @@ ReplyUPtr RedisCluster::_command(Cmd cmd, const StringView &key, Args &&...args)
             // 2. If it's NOT exist, update slot mapping, and retry.
             // 3. If it's still exist, that means the node is down, NOT removed, throw exception.
         } catch (const MovedError &err) {
-            std::cout << this << " _command MovedError key: " << key << std::endl;
+            std::cout << this << " _command MovedError" << std::endl;
             // Slot mapping has been changed, update it and try again.
             _pool.update();
         } catch (const AskError &err) {
-            std::cout << this << " _command AskError key: " << key << std::endl;
+            std::cout << this << " _command AskError" << std::endl;
 
             auto pool = _pool.fetch(err.node());
             assert(pool);
