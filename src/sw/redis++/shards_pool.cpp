@@ -15,6 +15,7 @@
  *************************************************************************/
 
 #include "shards_pool.h"
+#include <ostream>
 #include <unordered_set>
 #include <iostream>
 #include "errors.h"
@@ -88,6 +89,7 @@ ConnectionPoolSPtr ShardsPool::fetch(const Node &node) {
 }
 
 void ShardsPool::update() {
+    std::cout << "ShardsPool::update" << std::endl;
     // My might send command to a removed node.
     // Try at most 3 times.
     for (auto idx = 0; idx < 3; ++idx) {
@@ -335,6 +337,7 @@ ConnectionOptions ShardsPool::_connection_options(Slot slot) {
 }
 
 auto ShardsPool::_add_node(const Node &node) -> NodeMap::iterator {
+
     auto opts = _connection_opts;
     opts.host = node.host;
     opts.port = node.port;
@@ -342,6 +345,9 @@ auto ShardsPool::_add_node(const Node &node) -> NodeMap::iterator {
     // TODO: Better set readonly an attribute of `Node`.
     if (_role == Role::SLAVE) {
         opts.readonly = true;
+        std::cout << "_add_node role: slave" << std::endl;
+    } else {
+        std::cout << "_add_node role: master" << std::endl;
     }
 
     return _pools.emplace(node, std::make_shared<ConnectionPool>(_pool_opts, opts)).first;
