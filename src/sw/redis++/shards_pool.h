@@ -107,7 +107,7 @@ private:
 
     std::mutex _mutex;
 
-    Role _role = Role::MASTER;
+    Role _role = Role::SLAVE;
 
     static const std::size_t SHARDS = 16383;
 };
