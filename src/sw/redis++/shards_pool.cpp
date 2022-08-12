@@ -89,7 +89,7 @@ ConnectionPoolSPtr ShardsPool::fetch(const Node &node) {
 }
 
 void ShardsPool::update() {
-    std::cout << this << "ShardsPool::update" << std::endl;
+    std::cout << this << " ShardsPool::update" << std::endl;
     // My might send command to a removed node.
     // Try at most 3 times.
     for (auto idx = 0; idx < 3; ++idx) {
