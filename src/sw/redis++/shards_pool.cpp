@@ -17,6 +17,7 @@
 #include "shards_pool.h"
 #include <unordered_set>
 #include "errors.h"
+#include <ctime>
 
 namespace sw {
 
@@ -295,7 +296,7 @@ Slot ShardsPool::_slot() const {
 }
 
 std::size_t ShardsPool::_random(std::size_t min, std::size_t max) const {
-    static thread_local std::default_random_engine engine;
+    static thread_local std::default_random_engine engine(std::time(0));
 
     std::uniform_int_distribution<std::size_t> uniform_dist(min, max);
 
