@@ -249,9 +249,6 @@ std::pair<SlotRange, Node> ShardsPool::_parse_slot_info(redisReply &reply) const
         // Randomly pick a node from both master and slave
         auto size = reply.elements;
         auto *slave_node_reply = reply.element[_random(2, size - 1)];
-
-        return std::make_pair(slot_range, _parse_node(slave_node_reply));
-
         return std::make_pair(slot_range, _parse_node(slave_node_reply));
     }
 
