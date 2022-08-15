@@ -28,7 +28,7 @@ const std::size_t ShardsPool::SHARDS;
 
 ShardsPool::ShardsPool(const ConnectionPoolOptions &pool_opts,
                         const ConnectionOptions &connection_opts,
-                        Role role) :
+                        Role role = Role::MASTER) :
                             _pool_opts(pool_opts),
                             _connection_opts(connection_opts),
                             _role(role) {
@@ -68,6 +68,12 @@ ShardsPool& ShardsPool::operator=(ShardsPool &&that) {
 }
 
 ConnectionPoolSPtr ShardsPool::fetch(const StringView &key) {
+    if (_role == Role::MASTER) {
+        std::cout << this << " ShardsPool::fetch role: master" << std::endl;
+    } else { 
+        std::cout << this << " ShardsPool::fetch role: slave" << std::endl;
+    }
+
     auto slot = _slot(key);
 
     return _fetch(slot);
