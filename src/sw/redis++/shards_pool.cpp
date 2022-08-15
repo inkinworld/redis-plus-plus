@@ -295,8 +295,7 @@ Slot ShardsPool::_slot() const {
 }
 
 std::size_t ShardsPool::_random(std::size_t min, std::size_t max) const {
-    std::random_device rd;
-    static thread_local std::mt19937 gen(rd());
+    static thread_local std::mt19937 gen(std::random_device{}());
 
     std::uniform_int_distribution<std::size_t> uniform_dist(min, max);
 
